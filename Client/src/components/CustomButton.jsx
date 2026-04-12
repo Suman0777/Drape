@@ -1,5 +1,5 @@
 import React from "react";
-import state from "../../strore";
+import state from "../strore";
 import { useSnapshot } from "valtio";
 
 const CustomButton = ({ type, title, handleClick, customStyles }) => {

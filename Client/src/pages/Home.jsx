@@ -1,7 +1,7 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { useSnapshot } from "valtio";
 
-import state from "../../strore";
+import state from "../strore";
 import { CustomButton } from "../components";
 
 import {
