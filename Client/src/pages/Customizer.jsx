@@ -1,10 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useSnapshot } from "valtio";
 
 import state from "../strore";
 import config from "../config/config";
-import { download } from "../assets";
+import { download, logoShirt, stylishShirt } from "../assets";
 import { downloadCanvasToImage, reader } from "../config/helpers";
 import { EditorTabs, FilterTabs, DecalTypes } from "../config/constants";
 import { fadeAnimation, slideAnimation } from "../config/motion";
@@ -18,6 +18,32 @@ import {
 
 const Customizer = () => {
   const snap = useSnapshot(state);
+
+  const [file, setFile] = useState('');
+
+  const [prompt, setPrompt] = useState('')
+
+  const [generatingImage, setGeneratingImage] = useState(false)
+ 
+  const [activeEditorTab , setactiveEditorTab] = useState("");
+  const [activefilterTab, setactivefilterTab] = useState({
+    logoShirt: true,
+    stylishShirt: false,
+
+  })
+  // show tab conataint depanding on the conatant 
+
+  const generateTabContent = () =>{
+
+    switch (activeEditorTab) {
+      case "colorpicker":
+        return <ColourPicker/>
+        break;
+    
+      default:
+        break;
+    }
+  } 
 
   return (
     <AnimatePresence>
