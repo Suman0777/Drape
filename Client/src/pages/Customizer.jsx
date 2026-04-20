@@ -39,12 +39,76 @@ const Customizer = () => {
       case "colorpicker":
         return <ColourPicker/>
         break;
-    
+      case "filepicker":
+        return <FilePicker
+        file={file}
+        setFile={setFile}
+        readFile={readFile}
+        />
+        break;
+      case "aipicker":
+        return <AiPicker />
+        break;
       default:
         break;
     }
   } 
 
+  const handleDecals = (type, result) =>{
+    console.log('handleDecals called with type:', type)
+    const decalType = DecalTypes[type]
+    console.log('decalType:', decalType)
+
+    state[decalType.stateProperty] = result
+    console.log('state updated:', state)
+
+    if(!activefilterTab[decalType.filterTab]) {
+      handActiveFilterTab(decalType.filterTab)
+    }
+  };
+
+  const handActiveFilterTab = (tabName) =>{
+    console.log('handActiveFilterTab called with:', tabName)
+    switch (tabName) {
+      case "logoShirt":
+        setactivefilterTab({...activefilterTab, logoShirt: !activefilterTab.logoShirt})
+        state.isLogoTexture = !activefilterTab.logoShirt
+        break;
+      case "stylishShirt":
+        setactivefilterTab({...activefilterTab, stylishShirt: !activefilterTab.stylishShirt})
+        state.isFullTexture = !activefilterTab.stylishShirt
+      break;
+      default:
+        setactivefilterTab({logoShirt: true, stylishShirt: false})
+        state.isLogoTexture = true
+        state.isFullTexture = false
+        break;
+    }
+  };
+
+
+  const readFile = (type) =>{
+    console.log('readFile called with type:', type)
+    console.log('file:', file)
+    
+    if(!file) {
+      alert('Please select a file first')
+      return
+    }
+    
+    reader(file)
+    .then((result) =>{
+      console.log('File read successfully:', result)
+      handleDecals(type, result)
+      setactiveEditorTab("")
+    })
+    .catch((error) => {
+      console.error('Error reading file:', error)
+      alert('Error uploading image')
+    });
+  };
+
+ 
   return (
     <AnimatePresence>
       {!snap.intro && (
@@ -57,8 +121,11 @@ const Customizer = () => {
             <div className="flex items-center min-h-screen">
               <div className="editortabs-constainer tabs">
                 {EditorTabs.map((tab) => {
-                  return <Tab key={tab.name} tab={tab} handleclick={()=>{}}/>;
+                  return <Tab key={tab.name} tab={tab} handleclick={()=>{setactiveEditorTab(tab.name)}}/>
                 })}
+
+
+                {generateTabContent()}
               </div>
             </div>
           </motion.div>
@@ -80,7 +147,7 @@ const Customizer = () => {
             {...slideAnimation("up")}
           >
             {FilterTabs.map((tab) => {
-              return <Tab key={tab.name} tab={tab} isfilterTab isActive="" handleclick={()=>{}}/>;
+              return <Tab key={tab.name} tab={tab} isfilterTab isActiveTab={activefilterTab[tab.name]} handleclick={()=>handActiveFilterTab(tab.name)}/>
             })}
           </motion.div>
         </>

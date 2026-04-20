@@ -1,8 +1,23 @@
 import React from 'react'
+import {SketchPicker} from "react-color"
+import { useSnapshot } from 'valtio'
+import state from '../strore'
 
 const ColourPicker = () => {
+const snap = useSnapshot(state)
   return (
-    <div>ColourPicker</div>
+    <div className="absolute left-full ml-5">
+      <SketchPicker
+      color={snap.color}
+      disableAlpha
+      presetColors={[
+        "#000000",
+        "#ffffff",
+        "#ff0000",
+      ]}
+      onChange={(color) => state.color = color.hex}
+      />
+    </div>
   )
 }
 
