@@ -47,12 +47,33 @@ const Customizer = () => {
         />
         break;
       case "aipicker":
-        return <AiPicker />
+        return <AiPicker 
+          prompt={prompt}
+          setPrompt={setPrompt}
+          generatingImage={generatingImage}
+          handleSubmit={handleSubmit}
+        />
         break;
       default:
         break;
     }
   } 
+
+  const handleSubmit = async(type) =>{
+    if(!prompt) {
+      return alert('Please enter a prompt')
+    }
+    try {
+      //calling Backend to generate a ai image
+    } catch (error) {
+      console.error('Error generating image:', error.message)
+      alert(error.message, 'Error generating image')
+    }
+    finally{
+      setGeneratingImage(false);
+      setactiveEditorTab("");
+    }
+  }
 
   const handleDecals = (type, result) =>{
     console.log('handleDecals called with type:', type)
