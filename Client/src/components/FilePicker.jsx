@@ -3,15 +3,15 @@ import CustomButton from './CustomButton'
 const FilePicker = ({ file, setFile, readFile }) => {
   return (
     <div className="filepicker-container">
-      <div className="flex-1 flex-col  rounded-2xl cursor-pointer" >
+      <div className="flex-1 flex-col rounded-2xl cursor-pointer" >
         <input
           id="file-upload"
           type="file"
           accept="image/*"
-          className="file-upload "
+          className='file-upload'
           onChange={(e) => setFile(e.target.files[0])}
         />
-        <label htmlFor="file-upload" className="file-upload-label flex justify-center bg-gray-200 rounded-2xl cursor-pointer">
+        <label htmlFor="file-upload" className="filepicker-label">
           Choose a file
         </label>
 

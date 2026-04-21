@@ -1,6 +1,7 @@
 import express from "express";
 import * as dotenv from "dotenv";
 import { OpenAI } from "openai/client.js";
+import axios from "axios";
 
 dotenv.config();
 
@@ -20,18 +21,25 @@ router.post("/", async (req, res) => {
 
     console.log("Prompt:", prompt);
 
-    const response = await openai.images.generate({
-      prompt: prompt,
-      n: 1,
-      size: "512x512",
-    //   response_format: "b64_json",
-    });
+    const response = await axios.post(
+      `https://api.cloudflare.com/client/v4/accounts/${process.env.CF_ACCOUNT_ID}/ai/run/@cf/stabilityai/stable-diffusion-xl-base-1.0`,
+      {
+        prompt: prompt,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${process.env.CF_API_TOKEN}`,
+          "Content-Type": "application/json",
+        },
+        responseType: "arraybuffer", 
+      }
+    );
+      const image = Buffer.from(response.data).toString("base64");
 
-    const image = response.data[0].b64_json;
-
-    res.status(200).json({ photo: image });
-  } catch (error) {
-    console.error(error);
+      res.status(200).json({ photo: image })
+  } 
+  catch (error) {
+    console.error(error.message);
     res.status(500).send(error.message || "Something went wrong");
   }
 });

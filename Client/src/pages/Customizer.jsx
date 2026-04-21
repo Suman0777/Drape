@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useSnapshot } from "valtio";
+import axios from "axios";
 
 import state from "../strore";
 import config from "../config/config";
@@ -65,9 +66,28 @@ const Customizer = () => {
     }
     try {
       //calling Backend to generate a ai image
+      setGeneratingImage(true);
+
+      const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/v1/dalle`, {
+        prompt
+      });
+
+      const data = await response.data;
+      console.log('AI response:', data);
+
+      if(response.status === 200) {
+        const imageData = data.photo;
+        handleDecals(type, `data:image/png;base64,${imageData}`)
+        setPrompt("");
+      } else {
+        throw new Error(data.error || 'Failed to generate image')
+      }
+
+
     } catch (error) {
       console.error('Error generating image:', error.message)
       alert(error.message, 'Error generating image')
+      setPrompt("")
     }
     finally{
       setGeneratingImage(false);
