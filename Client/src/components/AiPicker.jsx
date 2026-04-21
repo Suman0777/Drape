@@ -5,7 +5,7 @@ const AiPicker = ({prompt, setPrompt, generatingImage, handleSubmit}) => {
     <div className='aipicker-container'>
       <textarea
       className='aipicker-textarea'
-      placeholder='Ask AI to generate an image...'
+      placeholder='Prompt to Generate the Logo or the Texture... '
       rows={5}
       value={prompt}
       onChange={(e) => setPrompt(e.target.value)}
@@ -20,7 +20,7 @@ const AiPicker = ({prompt, setPrompt, generatingImage, handleSubmit}) => {
         ) : (
           <>
           <CustomButton
-            type="outline"
+            type="filled"
             title="AI Logo"
             handleClick={()=> handleSubmit('logo')}
             customStyles="text-xs"
