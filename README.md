@@ -55,7 +55,7 @@ An interactive 3D t-shirt customization app powered by React, Three.js, and AI i
 
    **`Client/.env.local`**
    ```
-   VITE_BACKEND_URL=http://localhost:3000
+   VITE_BACKEND_URL=http://localhost:<PORT NO.>
    ```
 
 ### Running the App
@@ -72,7 +72,7 @@ cd Client
 npm run dev
 ```
 
-Open [http://localhost:5173](http://localhost:5173) in your browser.
+Open [http://localhost:<PORT NO.>](http://localhost:<PORT No.>) in your browser.
 
 ## Project Structure
 
