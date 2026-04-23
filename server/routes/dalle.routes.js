@@ -1,15 +1,10 @@
 import express from "express";
 import * as dotenv from "dotenv";
-import { OpenAI } from "openai/client.js";
 import axios from "axios";
 
 dotenv.config();
 
 const router = express.Router();
-
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY
-});
 
 router.post("/", async (req, res) => {
   try {
