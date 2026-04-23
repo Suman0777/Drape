@@ -72,7 +72,7 @@ cd Client
 npm run dev
 ```
 
-Open [http://localhost:<PORT NO.>](http://localhost:<PORT No.>) in your browser.
+Open ( http://localhost:<PORT_No.> ) in your browser.
 
 ## Project Structure
 

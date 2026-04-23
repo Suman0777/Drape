@@ -21,32 +21,25 @@ const Customizer = () => {
   const snap = useSnapshot(state);
 
   const [file, setFile] = useState('');
-
   const [prompt, setPrompt] = useState('')
-
   const [generatingImage, setGeneratingImage] = useState(false)
  
   const [activeEditorTab , setactiveEditorTab] = useState("");
   const [activefilterTab, setactivefilterTab] = useState({
     logoShirt: true,
     stylishShirt: false,
-
   })
-  // show tab conataint depanding on the conatant 
 
   const generateTabContent = () =>{
-
     switch (activeEditorTab) {
       case "colorpicker":
         return <ColourPicker/>
-        break;
       case "filepicker":
         return <FilePicker
-        file={file}
-        setFile={setFile}
-        readFile={readFile}
+          file={file}
+          setFile={setFile}
+          readFile={readFile}
         />
-        break;
       case "aipicker":
         return <AiPicker 
           prompt={prompt}
@@ -54,11 +47,52 @@ const Customizer = () => {
           generatingImage={generatingImage}
           handleSubmit={handleSubmit}
         />
-        break;
       default:
-        break;
+        return null;
     }
   } 
+
+  const handleActiveEditorTab = (tabName) => {
+    if (activeEditorTab === tabName) {
+      // If clicking on the same tab, close it
+      setactiveEditorTab("");
+    } else {
+      // If clicking on a different tab, open it
+      setactiveEditorTab(tabName);
+    }
+  };
+
+  const handleDecals = (type, result) =>{
+    console.log('handleDecals called with type:', type)
+    const decalType = DecalTypes[type]
+    console.log('decalType:', decalType)
+
+    state[decalType.stateProperty] = result
+    console.log('state updated:', state)
+
+    if(!activefilterTab[decalType.filterTab]) {
+      handActiveFilterTab(decalType.filterTab)
+    }
+  };
+
+  const handActiveFilterTab = (tabName) =>{
+    console.log('handActiveFilterTab called with:', tabName)
+    switch (tabName) {
+      case "logoShirt":
+        setactivefilterTab({...activefilterTab, logoShirt: !activefilterTab.logoShirt})
+        state.isLogoTexture = !activefilterTab.logoShirt
+        break;
+      case "stylishShirt":
+        setactivefilterTab({...activefilterTab, stylishShirt: !activefilterTab.stylishShirt})
+        state.isFullTexture = !activefilterTab.stylishShirt
+        break;
+      default:
+        setactivefilterTab({logoShirt: true, stylishShirt: false})
+        state.isLogoTexture = true
+        state.isFullTexture = false
+        break;
+    }
+  };
 
   const handleSubmit = async(type) =>{
     if(!prompt) {
@@ -95,39 +129,6 @@ const Customizer = () => {
     }
   }
 
-  const handleDecals = (type, result) =>{
-    console.log('handleDecals called with type:', type)
-    const decalType = DecalTypes[type]
-    console.log('decalType:', decalType)
-
-    state[decalType.stateProperty] = result
-    console.log('state updated:', state)
-
-    if(!activefilterTab[decalType.filterTab]) {
-      handActiveFilterTab(decalType.filterTab)
-    }
-  };
-
-  const handActiveFilterTab = (tabName) =>{
-    console.log('handActiveFilterTab called with:', tabName)
-    switch (tabName) {
-      case "logoShirt":
-        setactivefilterTab({...activefilterTab, logoShirt: !activefilterTab.logoShirt})
-        state.isLogoTexture = !activefilterTab.logoShirt
-        break;
-      case "stylishShirt":
-        setactivefilterTab({...activefilterTab, stylishShirt: !activefilterTab.stylishShirt})
-        state.isFullTexture = !activefilterTab.stylishShirt
-      break;
-      default:
-        setactivefilterTab({logoShirt: true, stylishShirt: false})
-        state.isLogoTexture = true
-        state.isFullTexture = false
-        break;
-    }
-  };
-
-
   const readFile = (type) =>{
     console.log('readFile called with type:', type)
     console.log('file:', file)
@@ -149,7 +150,6 @@ const Customizer = () => {
     });
   };
 
- 
   return (
     <AnimatePresence>
       {!snap.intro && (
@@ -162,9 +162,13 @@ const Customizer = () => {
             <div className="flex items-center min-h-screen">
               <div className="editortabs-constainer tabs">
                 {EditorTabs.map((tab) => {
-                  return <Tab key={tab.name} tab={tab} handleclick={()=>{setactiveEditorTab(tab.name)}}/>
+                  return <Tab 
+                    key={tab.name} 
+                    tab={tab} 
+                    isActiveTab={activeEditorTab === tab.name}
+                    handleclick={() => handleActiveEditorTab(tab.name)}
+                  />
                 })}
-
 
                 {generateTabContent()}
               </div>
@@ -190,6 +194,18 @@ const Customizer = () => {
             {FilterTabs.map((tab) => {
               return <Tab key={tab.name} tab={tab} isfilterTab isActiveTab={activefilterTab[tab.name]} handleclick={()=>handActiveFilterTab(tab.name)}/>
             })}
+            
+            <div
+              className="tab-btn glassmorphism rounded-full"
+              onClick={downloadCanvasToImage}
+              style={{ backgroundColor: "transparent", opacity: 1 }}
+            >
+              <img 
+                src={download} 
+                alt="download"
+                className="w-11/12 h-11/12 object-contain"
+              />
+            </div>
           </motion.div>
         </>
       )}

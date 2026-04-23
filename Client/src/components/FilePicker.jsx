@@ -2,8 +2,8 @@ import React from 'react'
 import CustomButton from './CustomButton'
 const FilePicker = ({ file, setFile, readFile }) => {
   return (
-    <div className="filepicker-container">
-      <div className="flex-1 flex-col rounded-2xl cursor-pointer" >
+    <div className="filepicker-container justify-center items-center flex-col">
+      <div className="flex flex-col rounded-2xl cursor-pointer" >
         <input
           id="file-upload"
           type="file"
@@ -11,7 +11,7 @@ const FilePicker = ({ file, setFile, readFile }) => {
           className='file-upload'
           onChange={(e) => setFile(e.target.files[0])}
         />
-        <label htmlFor="file-upload" className="filepicker-label">
+        <label htmlFor="file-upload" className="bg-gray-300 filepicker-label text-center">
           Choose a file
         </label>
 
@@ -20,18 +20,18 @@ const FilePicker = ({ file, setFile, readFile }) => {
         </p>
          
       </div>
-      <div className="mt-4 flex flex-wrap gap-3">
+      <div className="mt-4 flex flex-wrap gap-5 justify-center">
         <CustomButton
           type="filled"
           title="logo"
           handleClick={() => readFile('logo')}
-          customStyles= "text-xs"
+          customStyles= "text-xs w-15"
         />
         <CustomButton
           type="filled"
           title="full"
           handleClick={() => readFile('full')}
-          customStyles= "text-xs"
+          customStyles= "text-xs w-15"
         />
       </div>
     </div>

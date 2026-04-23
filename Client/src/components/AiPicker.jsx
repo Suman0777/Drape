@@ -10,7 +10,7 @@ const AiPicker = ({prompt, setPrompt, generatingImage, handleSubmit}) => {
       value={prompt}
       onChange={(e) => setPrompt(e.target.value)}
       />
-      <div className='flex flex-wrap gap-3'>
+      <div className='flex flex-wrap gap-4 justify-center'>
         {generatingImage ? (
           <CustomButton
             type="outline"
